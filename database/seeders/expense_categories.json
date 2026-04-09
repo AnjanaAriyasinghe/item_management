@@ -1,0 +1,113 @@
+{
+    "expense_categories": [
+      {
+        "category": "Utilities",
+        "sub_categories": [
+          "Electricity Bill",
+          "Water Bill",
+          "Internet Bill",
+          "Telephone Bill",
+          "Gas Bill"
+        ]
+      },
+      {
+        "category": "Rent and Lease",
+        "sub_categories": [
+          "Office Rent",
+          "Equipment Lease",
+          "Vehicle Lease"
+        ]
+      },
+      {
+        "category": "Salaries and Wages",
+        "sub_categories": [
+          "Employee Salaries",
+          "Bonuses",
+          "Overtime Payments"
+        ]
+      },
+      {
+        "category": "Office Supplies",
+        "sub_categories": [
+          "Stationery",
+          "Printing Supplies",
+          "Office Furniture"
+        ]
+      },
+      {
+        "category": "Travel and Transportation",
+        "sub_categories": [
+          "Fuel Costs",
+          "Vehicle Maintenance",
+          "Business Travel",
+          "Airfare",
+          "Accommodation"
+        ]
+      },
+      {
+        "category": "Marketing and Advertising",
+        "sub_categories": [
+          "Online Advertising",
+          "Print Advertising",
+          "Promotional Events",
+          "Social Media Campaigns"
+        ]
+      },
+      {
+        "category": "Professional Services",
+        "sub_categories": [
+          "Legal Fees",
+          "Accounting Fees",
+          "Consultancy Fees"
+        ]
+      },
+      {
+        "category": "Insurance",
+        "sub_categories": [
+          "Health Insurance",
+          "Property Insurance",
+          "Vehicle Insurance",
+          "General Liability Insurance"
+        ]
+      },
+      {
+        "category": "Repairs and Maintenance",
+        "sub_categories": [
+          "Building Maintenance",
+          "Equipment Repair",
+          "IT Support and Repairs"
+        ]
+      },
+      {
+        "category": "Bank Charges and Interest",
+        "sub_categories": [
+          "Loan Interest Payments",
+          "Bank Service Fees",
+          "Credit Card Fees"
+        ]
+      },
+      {
+        "category": "Tax and Licenses",
+        "sub_categories": [
+          "Property Tax",
+          "Business Licenses",
+          "Vehicle Registration"
+        ]
+      },
+      {
+        "category": "Miscellaneous Expenses",
+        "sub_categories": [
+          "Gifts and Donations",
+          "Entertainment",
+          "Charitable Contributions"
+        ]
+      },
+      {
+        "category": "Depreciation and Amortization",
+        "sub_categories": [
+          "Equipment Depreciation",
+          "Amortization of Intangibles"
+        ]
+      }
+    ]
+  }
