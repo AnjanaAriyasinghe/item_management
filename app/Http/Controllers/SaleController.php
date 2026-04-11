@@ -37,11 +37,17 @@ class SaleController extends Controller
                     ->addColumn('sale_date_fmt', fn($row) => \Carbon\Carbon::parse($row->sale_date)->format('d M Y'))
                     ->addColumn('action', function ($data) {
                         $buttons = '';
+                        $buttons .= '<a href="' . route('admin.sales.edit', $data->id) . '" class="btn btn-warning btn-sm me-1" title="Edit Sale">
+                                        <i class="ti ti-pencil f-20"></i>
+                                    </a>';
+                        $buttons .= '<button class="btn btn-info btn-sm me-1 btnSaleView" data-id="' . $data->id . '" title="View Details">
+                                        <i class="ti ti-eye f-20"></i>
+                                    </button>';
                         $buttons .= '<a href="' . route('admin.sales.show', $data->id) . '" target="_blank"
-                                        class="btn btn-success btn-sm me-1" title="View / Print">
+                                        class="btn btn-success btn-sm me-1" title="Print Receipt">
                                         <i class="ti ti-printer f-20"></i>
                                     </a>';
-                        $buttons .= '<button class="btn btn-danger btn-sm btnSaleDelete"
+                        $buttons .= '<button class="btn btn-danger btn-sm"
                                         onclick="handleDelete(\'' . route('admin.sales.destroy', $data->id) . '\', { _token: \'' . csrf_token() . '\' })"
                                         title="Delete">
                                         <i class="ti ti-trash f-20"></i>
@@ -150,6 +156,147 @@ class SaleController extends Controller
             ], 200);
         } catch (\Throwable $th) {
             DB::rollBack();
+            return response()->json(['message' => $th->getMessage(), 'status' => false], 500);
+        }
+    }
+
+    /**
+     * Show the form for editing the specified sale / receipt.
+     */
+    public function edit(Sale $sale)
+    {
+        $sale->load(['saleItems.item']);
+        $customers = Customer::orderBy('name')->get(['id', 'customer_code', 'name', 'phone']);
+        return view('pages.admin.sales.edit', compact('sale', 'customers'));
+    }
+
+    /**
+     * Update the specified sale and its line items.
+     * Also manages Stock Out entry reversal and new records.
+     */
+    public function update(Request $request, Sale $sale)
+    {
+        $request->validate([
+            'sale_date'        => 'required|date',
+            'customer_id'      => 'nullable|exists:customers,id',
+            'discount_type'    => 'required|in:percent,fixed',
+            'discount_value'   => 'required|numeric|min:0',
+            'note'             => 'nullable|string|max:1000',
+            'items'            => 'required|array|min:1',
+            'items.*.item_id'    => 'required|exists:items,id',
+            'items.*.quantity'   => 'required|numeric|min:0.01',
+            'items.*.unit_price' => 'required|numeric|min:0',
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            // Reverse old stock transactions related to this sale
+            Stock::where('remark', 'Sale: ' . $sale->sale_no)->forceDelete();
+
+            // Delete old sale items
+            $sale->saleItems()->delete();
+
+            // Calculate totals
+            $subtotal = 0;
+            foreach ($request->items as $line) {
+                $subtotal += $line['quantity'] * $line['unit_price'];
+            }
+
+            $discountAmount = 0;
+            if ($request->discount_type === 'percent') {
+                $discountAmount = $subtotal * ($request->discount_value / 100);
+            } else {
+                $discountAmount = min($request->discount_value, $subtotal);
+            }
+            $total = $subtotal - $discountAmount;
+
+            // Update Sale header
+            $sale->update([
+                'customer_id'    => $request->customer_id ?: null,
+                'sale_date'      => $request->sale_date,
+                'subtotal'       => $subtotal,
+                'discount_type'  => $request->discount_type,
+                'discount_value' => $request->discount_value,
+                'discount_amount'=> $discountAmount,
+                'total_amount'   => $total,
+                'note'           => $request->note,
+                'updated_by'     => auth()->id(),
+            ]);
+
+            // Re-create line items + Stock Out entries
+            foreach ($request->items as $line) {
+                $item = Item::findOrFail($line['item_id']);
+                $lineTotal = $line['quantity'] * $line['unit_price'];
+
+                SaleItem::create([
+                    'sale_id'    => $sale->id,
+                    'item_id'    => $item->id,
+                    'item_name'  => $item->item_name,
+                    'item_code'  => $item->item_code,
+                    'quantity'   => $line['quantity'],
+                    'unit_price' => $line['unit_price'],
+                    'line_total' => $lineTotal,
+                ]);
+
+                // Record new Stock Out
+                Stock::create([
+                    'item_id'          => $item->id,
+                    'transaction_type' => 'out',
+                    'stock_quantity'   => $line['quantity'],
+                    'unit_price'       => $line['unit_price'],
+                    'remark'           => 'Sale: ' . $sale->sale_no,
+                    'stock_date'       => $request->sale_date,
+                    'created_by'       => auth()->id(), // Keeps track of who updated it via this transaction
+                ]);
+            }
+
+            DB::commit();
+            return response()->json([
+                'message' => 'Sale updated successfully.',
+                'status'  => true,
+                'sale_id' => $sale->id,
+                'print_url' => route('admin.sales.show', $sale->id),
+            ], 200);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return response()->json(['message' => $th->getMessage(), 'status' => false], 500);
+        }
+    }
+
+    /**
+     * Return sale details as JSON for the view modal.
+     */
+    public function getDetail(Sale $sale)
+    {
+        try {
+            $sale->load(['customer', 'saleItems', 'createdBy']);
+            return response()->json([
+                'status' => true,
+                'sale'   => [
+                    'sale_no'         => $sale->sale_no,
+                    'sale_date'       => \Carbon\Carbon::parse($sale->sale_date)->format('d M Y'),
+                    'customer_name'   => $sale->customer?->name ?? 'Walk-in Customer',
+                    'customer_code'   => $sale->customer?->customer_code ?? '—',
+                    'customer_phone'  => $sale->customer?->phone ?? '—',
+                    'customer_city'   => $sale->customer?->city ?? '—',
+                    'created_by'      => $sale->createdBy?->name ?? '—',
+                    'subtotal'        => number_format($sale->subtotal, 2),
+                    'discount_type'   => $sale->discount_type,
+                    'discount_value'  => $sale->discount_value,
+                    'discount_amount' => number_format($sale->discount_amount, 2),
+                    'total_amount'    => number_format($sale->total_amount, 2),
+                    'note'            => $sale->note,
+                    'items'           => $sale->saleItems->map(fn($i) => [
+                        'item_code'  => $i->item_code,
+                        'item_name'  => $i->item_name,
+                        'quantity'   => rtrim(rtrim(number_format($i->quantity, 2), '0'), '.'),
+                        'unit_price' => number_format($i->unit_price, 2),
+                        'line_total' => number_format($i->line_total, 2),
+                    ]),
+                ],
+            ]);
+        } catch (\Throwable $th) {
             return response()->json(['message' => $th->getMessage(), 'status' => false], 500);
         }
     }

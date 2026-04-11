@@ -76,5 +76,8 @@
                 <i class="ti ti-stack-2 me-1"></i>Stock Report</a>
         </li>
         @endcanany
+        <li class="pc-item"><a class="pc-link" href="{{ route('admin.sales_report.index') }}">
+                <i class="ti ti-report-money me-1"></i>Sales Report</a>
+        </li>
     </ul>
 </li>

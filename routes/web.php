@@ -20,6 +20,7 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\StockReportController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\SalesReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -91,7 +92,11 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('customers', CustomerController::class)->names('admin.customers');
         // Sales / Receipts
         Route::get('sales/search-items', [SaleController::class, 'searchItems'])->name('admin.sales.search');
+        Route::get('sales/{sale}/detail', [SaleController::class, 'getDetail'])->name('admin.sales.detail');
         Route::resource('sales', SaleController::class)->names('admin.sales');
+        
+        // Sales Report
+        Route::get('sales-report', [SalesReportController::class, 'index'])->name('admin.sales_report.index');
     });
     Route::prefix('finance')->group(callback: function () {
         Route::get('get_sub_category/{id}', [ExpenseController::class, 'get_sub_category'])->name('finance.get_sub_category');
