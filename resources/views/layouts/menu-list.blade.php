@@ -55,6 +55,11 @@
             @endcanany
 
             <li class="pc-item"><a class="pc-link" href="{{ route('admin.customers.index') }}">Customers</a></li>
+            <li class="pc-item">
+                <a class="pc-link" href="{{ route('admin.sales.index') }}">
+                    <i class="ph-duotone ph-receipt me-1"></i> Sales &amp; Receipts
+                </a>
+            </li>
     </ul>
 </li>
 

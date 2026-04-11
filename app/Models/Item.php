@@ -47,4 +47,22 @@ class Item extends Model
     {
         return $this->hasMany(\App\Models\Stock::class, 'item_id', 'id');
     }
+
+    /**
+     * All sale line-items for this item.
+     */
+    public function saleItems()
+    {
+        return $this->hasMany(\App\Models\SaleItem::class, 'item_id', 'id');
+    }
+
+    /**
+     * Current available stock quantity (stock-in minus stock-out).
+     */
+    public function availableStock(): float
+    {
+        $in  = $this->stocks()->where('transaction_type', 'in')->sum('stock_quantity');
+        $out = $this->stocks()->where('transaction_type', 'out')->sum('stock_quantity');
+        return max(0, $in - $out);
+    }
 }

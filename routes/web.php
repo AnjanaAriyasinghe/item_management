@@ -19,6 +19,7 @@ use App\Http\Controllers\VendorController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\StockReportController;
+use App\Http\Controllers\SaleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -88,6 +89,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('stock-report', [StockReportController::class, 'index'])->name('admin.stock_report.index');
         Route::get('stock-report/{item}/history', [StockReportController::class, 'history'])->name('admin.stock_report.history');
         Route::resource('customers', CustomerController::class)->names('admin.customers');
+        // Sales / Receipts
+        Route::get('sales/search-items', [SaleController::class, 'searchItems'])->name('admin.sales.search');
+        Route::resource('sales', SaleController::class)->names('admin.sales');
     });
     Route::prefix('finance')->group(callback: function () {
         Route::get('get_sub_category/{id}', [ExpenseController::class, 'get_sub_category'])->name('finance.get_sub_category');
