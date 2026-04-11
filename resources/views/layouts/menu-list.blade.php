@@ -50,6 +50,11 @@
             </ul>
         </li>
         @endcanany
+            @canany(['admin-common-items-module'])
+                <li class="pc-item"><a class="pc-link" href="{{ route('admin.items.index') }}">Items</a></li>
+            @endcanany
+
+            <li class="pc-item"><a class="pc-link" href="{{ route('admin.customers.index') }}">Customers</a></li>
     </ul>
 </li>
 

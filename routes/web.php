@@ -3,6 +3,7 @@
 use App\Http\Controllers\BankAccountController;
 use App\Http\Controllers\ChequeBookController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ExpensApprovalController;
 use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\ExpenseController;
@@ -86,6 +87,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('stocks', StockController::class)->names('admin.stocks');
         Route::get('stock-report', [StockReportController::class, 'index'])->name('admin.stock_report.index');
         Route::get('stock-report/{item}/history', [StockReportController::class, 'history'])->name('admin.stock_report.history');
+        Route::resource('customers', CustomerController::class)->names('admin.customers');
     });
     Route::prefix('finance')->group(callback: function () {
         Route::get('get_sub_category/{id}', [ExpenseController::class, 'get_sub_category'])->name('finance.get_sub_category');
