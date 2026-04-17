@@ -435,20 +435,20 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
-                                <div class="multiSelect-dropdown">
-                                    <div class="form-group form-floating">
-                                        <select multiple
-                                            class="form-control form-control-custom-select multiSelect-dropdown_field"
-                                            name="companies[]" id="companies" data-placeholder="Companies">
-                                            @foreach ($companies as $company)
-                                                <option value="{{ $company->id }}"
-                                                    data-company-name="{{ $company->name }}">{{ $company->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
+{{--                            <div class="col-md-6">--}}
+{{--                                <div class="multiSelect-dropdown">--}}
+{{--                                    <div class="form-group form-floating">--}}
+{{--                                        <select multiple--}}
+{{--                                            class="form-control form-control-custom-select multiSelect-dropdown_field"--}}
+{{--                                            name="companies[]" id="companies" data-placeholder="Companies">--}}
+{{--                                            @foreach ($companies as $company)--}}
+{{--                                                <option value="{{ $company->id }}"--}}
+{{--                                                    data-company-name="{{ $company->name }}">{{ $company->name }}</option>--}}
+{{--                                            @endforeach--}}
+{{--                                        </select>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
 
                             <div class="col-md-6">
                                 <div class="form-group form-floating mb-0">
@@ -463,18 +463,18 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
-                                <div class="form-group form-floating mb-0">
-                                    <select class="form-control role_id form-control-custom-select" name="default_company"
-                                        id="default_company">
-                                        <option value=""></option>
-                                        @foreach ($companies as $company)
-                                            <option value="{{ $company->id }}">{{ $company->name }}</option>
-                                        @endforeach
-                                    </select>
-                                    <label for="name"> Default Company <span class="text-danger">*</span></label>
-                                </div>
-                            </div>
+{{--                            <div class="col-md-6">--}}
+{{--                                <div class="form-group form-floating mb-0">--}}
+{{--                                    <select class="form-control role_id form-control-custom-select" name="default_company"--}}
+{{--                                        id="default_company">--}}
+{{--                                        <option value=""></option>--}}
+{{--                                        @foreach ($companies as $company)--}}
+{{--                                            <option value="{{ $company->id }}">{{ $company->name }}</option>--}}
+{{--                                        @endforeach--}}
+{{--                                    </select>--}}
+{{--                                    <label for="name"> Default Company <span class="text-danger">*</span></label>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
 
                             {{-- <div class="col-md-6">
                             <div class="multiSelect-dropdown">
@@ -580,8 +580,6 @@
                                     <th>Image</th>
                                     <th>Name</th>
                                     <th>Role</th>
-                                    <th>Default Company</th>
-                                    <th>Company</th>
                                     <th>NIC</th>
                                     <th>Email</th>
                                     <th>Mobile</th>
@@ -639,12 +637,6 @@
                 }, {
                     data: 'role',
                     name: 'role'
-                }, {
-                    data: 'default_company_name',
-                    name: 'default_company_name'
-                }, {
-                    data: 'company',
-                    name: 'company'
                 }, {
                     data: 'nic',
                     name: 'nic'

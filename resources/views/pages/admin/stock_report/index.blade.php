@@ -43,6 +43,15 @@
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between">
                 <h5 class="mb-0"><i class="ti ti-report me-2"></i>Item-wise Stock Summary</h5>
+                <div class="d-flex align-items-center">
+                    <label for="item_filter" class="form-label text-nowrap me-2 mb-0">Filter by Item:</label>
+                    <select id="item_filter" class="form-select form-select-sm" style="width: auto; min-width: 200px;">
+                        <option value="">All Items</option>
+                        @foreach($items as $item)
+                            <option value="{{ $item->id }}">{{ $item->item_code }} - {{ $item->item_name }}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -92,6 +101,9 @@ $(function () {
         serverSide: true,
         ajax: {
             url: "{{ route('admin.stock_report.index') }}",
+            data: function (d) {
+                d.item_id = $('#item_filter').val();
+            },
             dataSrc: function (json) {
                 // Compute totals from data
                 totalQty   = 0;
@@ -125,6 +137,10 @@ $(function () {
             { data: 'stock_status',   name: 'stock_status', orderable: false, searchable: false },
             { data: 'action',         name: 'action', orderable: false, searchable: false },
         ],
+    });
+
+    $('#item_filter').on('change', function() {
+        table.ajax.reload();
     });
 });
 </script>

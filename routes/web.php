@@ -3,6 +3,7 @@
 use App\Http\Controllers\BankAccountController;
 use App\Http\Controllers\ChequeBookController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ExpensApprovalController;
 use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\ExpenseController;
@@ -18,6 +19,9 @@ use App\Http\Controllers\VendorController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\StockReportController;
+use App\Http\Controllers\SaleController;
+use App\Http\Controllers\SalesReportController;
+use App\Http\Controllers\StockInHistoryReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -86,6 +90,16 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('stocks', StockController::class)->names('admin.stocks');
         Route::get('stock-report', [StockReportController::class, 'index'])->name('admin.stock_report.index');
         Route::get('stock-report/{item}/history', [StockReportController::class, 'history'])->name('admin.stock_report.history');
+        Route::resource('customers', CustomerController::class)->names('admin.customers');
+        // Sales / Receipts
+        Route::get('sales/search-items', [SaleController::class, 'searchItems'])->name('admin.sales.search');
+        Route::get('sales/{sale}/detail', [SaleController::class, 'getDetail'])->name('admin.sales.detail');
+        Route::resource('sales', SaleController::class)->names('admin.sales');
+        
+        // Sales Report
+        Route::get('sales-report', [SalesReportController::class, 'index'])->name('admin.sales_report.index');
+        
+        Route::get('stock-in-history-report', [StockInHistoryReportController::class, 'index'])->name('admin.stock_in_history_report.index');
     });
     Route::prefix('finance')->group(callback: function () {
         Route::get('get_sub_category/{id}', [ExpenseController::class, 'get_sub_category'])->name('finance.get_sub_category');

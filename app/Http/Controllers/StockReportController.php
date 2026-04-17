@@ -30,6 +30,10 @@ class StockReportController extends Controller
                         $query->where('transaction_type', 'out');
                     }], 'stock_quantity');
 
+                if ($request->filled('item_id')) {
+                    $data->where('id', $request->item_id);
+                }
+
                 return DataTables::of($data)
                     ->addIndexColumn()
                     ->addColumn('total_quantity', function ($row) {
@@ -68,7 +72,8 @@ class StockReportController extends Controller
                     ->make(true);
             }
 
-            return view('pages.admin.stock_report.index');
+            $items = Item::select('id', 'item_name', 'item_code')->get();
+            return view('pages.admin.stock_report.index', compact('items'));
         } catch (\Throwable $th) {
             return response()->json(['message' => $th->getMessage(), 'status' => false], 500);
         }

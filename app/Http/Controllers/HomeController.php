@@ -10,6 +10,9 @@ use App\Models\ExpenseSubCategory;
 use App\Models\Payment;
 use App\Models\Vendor;
 use App\Models\Company;
+use App\Models\Customer;
+use App\Models\Sale;
+use App\Models\Item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
@@ -135,12 +138,30 @@ class HomeController extends Controller
             $venndors = Vendor::count();
             $bankAccounts = BankAccount::count();
             $cheque_books = ChequeBook::count();
+
+            // New Metrics
+            $total_sales_amount = Sale::sum('total_amount');
+            $total_customers = Customer::count();
+            $total_items = Item::count();
+            
+            $low_stock_items = 0;
+            $items = Item::with('stocks')->get();
+            foreach ($items as $item) {
+                if ($item->availableStock() <= 10) {
+                    $low_stock_items++;
+                }
+            }
+
             $data = [
                 'expens_categories' => $expens_categories,
                 'expens_sub_categories' => $expens_sub_categories,
                 'venndors' => $venndors,
                 'bankAccounts' => $bankAccounts,
                 'cheque_books' => $cheque_books,
+                'total_sales_amount' => $total_sales_amount,
+                'total_customers' => $total_customers,
+                'total_items' => $total_items,
+                'low_stock_items' => $low_stock_items,
             ];
             return response()->json(['data' => $data], 200);
         } catch (\Throwable $th) {
