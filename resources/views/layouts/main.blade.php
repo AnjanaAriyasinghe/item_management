@@ -6,7 +6,7 @@
         use App\Models\Company;
         $company = Company::first(); // Fetch the first company record
         @endphp
-        <title>@yield('title') |{{ $company?$company->system_title:"Cheque Priting Application" }} </title>
+        <title>@yield('title') |{{ $company?$company->system_title:"Stock Management" }} </title>
         <!-- [Meta] -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">

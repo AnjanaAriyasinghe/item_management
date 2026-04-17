@@ -45,8 +45,8 @@ class UserRequest extends FormRequest
                 Rule::unique('users', 'nic')->whereNull('deleted_at'),
                 new NicValidation()
             ],
-            'default_company' => ['required'],
-            'companies' => ['required','exists:companies,id']
+//            'default_company' => ['required'],
+//            'companies' => ['required','exists:companies,id']
         ];
         if ($this->isMethod('patch') || $this->isMethod('put')) {
             $rules['email'] = 'required|string|email:rfc,dns|max:250|unique:users,email,' . $this->route('user');

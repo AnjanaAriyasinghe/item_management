@@ -5,14 +5,16 @@
 
         <div class="m-header text-center">
             @php
-            use App\Models\Company;
-            $company = Company::first(); // Fetch the first company record
+                use App\Models\Company;
+                $company = Company::first(); // Fetch the first company record
             @endphp
             <a href="/dashboard" class="b-brand text-primary">
                 <!-- ========   Change your logo from here   ============ -->
-                <img src="https://vitalone.lk/images/resources/logo-dark.png" alt="VitalOne" style="position: relative; bottom: 3px; left: 4px;" width="80px">
+                <img src="{{ asset('build/images/Logo/logo.png') }}" alt="VitalOne"
+                    style="position: relative; bottom: 3px; left: 4px;" width="80px">
                 {{-- <img src="{{ asset('storage/' . $company->logo) }}" alt="Company Logo" width="60%"> --}}
-                {{-- <img class="ps-2" src="{{ asset('storage/company_logo/vitalone-dark-logo.png') }}" alt="Company Logo" width="100%"> --}}
+                {{-- <img class="ps-2" src="{{ asset('storage/company_logo/vitalone-dark-logo.png') }}"
+                    alt="Company Logo" width="100%"> --}}
 
             </a>
         </div>

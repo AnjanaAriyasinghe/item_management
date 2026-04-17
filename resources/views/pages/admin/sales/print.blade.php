@@ -215,10 +215,10 @@
     {{-- ── Header ── --}}
     <div class="receipt-header">
         @if($company && $company->logo)
-            <img src="{{ asset('storage/' . $company->logo) }}" alt="Logo" class="company-logo">
+            <img src="{{ asset('build/images/Logo/logo.png') }}" alt="Logo" class="company-logo">
         @endif
-        <h1>{{ $company->name ?? config('app.name') }}</h1>
-        <p>{{ $company->address ?? '' }}</p>
+        <h1>YAOHANS</h1>
+        <p>67/1 , Narahenpita Rd , Nawala</p>
         @if($company && $company->phone)
             <p>Tel: {{ $company->phone }}</p>
         @endif

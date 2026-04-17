@@ -283,39 +283,39 @@ $(function () {
     });
 
     // ─── Save button ──────────────────────────────────
-    $('#submitFormBtn').on('click', function () {
-        var formData = new FormData($('#submitForm')[0]);
-        var actionUrl = $('#submitForm').attr('action');
-
-        $('#submitFormBtn').hide();
-        $('#formSpinner').show();
-
-        $.ajax({
-            url: actionUrl,
-            method: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function (response) {
-                if (response.status) {
-                    $('#createModel').modal('hide');
-                    table.ajax.reload();
-                    Swal.fire({ icon: 'success', title: 'Success', text: response.message, timer: 2000, showConfirmButton: false });
-                } else {
-                    Swal.fire({ icon: 'error', title: 'Error', text: response.message });
-                }
-            },
-            error: function (xhr) {
-                var errors = xhr.responseJSON?.errors;
-                var msg = errors ? Object.values(errors).flat().join('\n') : (xhr.responseJSON?.message || 'Something went wrong.');
-                Swal.fire({ icon: 'error', title: 'Validation Error', text: msg });
-            },
-            complete: function () {
-                $('#submitFormBtn').show();
-                $('#formSpinner').hide();
-            }
-        });
-    });
+    // $('#submitFormBtn').on('click', function () {
+    //     var formData = new FormData($('#submitForm')[0]);
+    //     var actionUrl = $('#submitForm').attr('action');
+    //
+    //     $('#submitFormBtn').hide();
+    //     $('#formSpinner').show();
+    //
+    //     $.ajax({
+    //         url: actionUrl,
+    //         method: 'POST',
+    //         data: formData,
+    //         processData: false,
+    //         contentType: false,
+    //         success: function (response) {
+    //             if (response.status) {
+    //                 $('#createModel').modal('hide');
+    //                 table.ajax.reload();
+    //                 Swal.fire({ icon: 'success', title: 'Success', text: response.message, timer: 2000, showConfirmButton: false });
+    //             } else {
+    //                 Swal.fire({ icon: 'error', title: 'Error', text: response.message });
+    //             }
+    //         },
+    //         error: function (xhr) {
+    //             var errors = xhr.responseJSON?.errors;
+    //             var msg = errors ? Object.values(errors).flat().join('\n') : (xhr.responseJSON?.message || 'Something went wrong.');
+    //             Swal.fire({ icon: 'error', title: 'Validation Error', text: msg });
+    //         },
+    //         complete: function () {
+    //             $('#submitFormBtn').show();
+    //             $('#formSpinner').hide();
+    //         }
+    //     });
+    // });
 
 });
 

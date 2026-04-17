@@ -21,6 +21,7 @@ use App\Http\Controllers\StockController;
 use App\Http\Controllers\StockReportController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SalesReportController;
+use App\Http\Controllers\StockInHistoryReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -97,6 +98,8 @@ Route::middleware(['auth'])->group(function () {
         
         // Sales Report
         Route::get('sales-report', [SalesReportController::class, 'index'])->name('admin.sales_report.index');
+        
+        Route::get('stock-in-history-report', [StockInHistoryReportController::class, 'index'])->name('admin.stock_in_history_report.index');
     });
     Route::prefix('finance')->group(callback: function () {
         Route::get('get_sub_category/{id}', [ExpenseController::class, 'get_sub_category'])->name('finance.get_sub_category');

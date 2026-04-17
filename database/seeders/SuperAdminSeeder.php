@@ -40,7 +40,7 @@ class SuperAdminSeeder extends Seeder
         $productManager->assignRole('Manager');
 
         Company::create([
-            'system_title'=>'Cheque Printing Application',
+            'system_title'=>'Stock Management System',
             'name'=>'****',
             'description'=>'*********',
             'logo'=>'*****',
