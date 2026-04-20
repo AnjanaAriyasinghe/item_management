@@ -15,7 +15,7 @@
         <meta name="author" content="phoenixcoded" />
 
         <!-- [Favicon] icon -->
-        <link rel="icon" href="https://vitalone.lk/images/favicon/apple-touch-icon.png" type="image/x-icon">
+        <link rel="icon" href="" type="image/x-icon">
         @yield('css')
 
         @include('layouts.head-css')
