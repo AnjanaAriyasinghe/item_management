@@ -10,7 +10,7 @@
             @endphp
             <a href="/dashboard" class="b-brand text-primary">
                 <!-- ========   Change your logo from here   ============ -->
-                <img src="{{ asset('build/images/Logo/logo.png') }}" alt="VitalOne"
+                <img src="{{ asset('build/images/Logo/logo.png') }}" alt="Y"
                     style="position: relative; bottom: 3px; left: 4px;" width="80px">
                 {{-- <img src="{{ asset('storage/' . $company->logo) }}" alt="Company Logo" width="60%"> --}}
                 {{-- <img class="ps-2" src="{{ asset('storage/company_logo/vitalone-dark-logo.png') }}"

@@ -15,7 +15,8 @@
         <meta name="author" content="phoenixcoded" />
 
         <!-- [Favicon] icon -->
-        <link rel="icon" href="" type="image/x-icon">
+{{--        <link rel="icon" href="" type="image/x-icon">--}}
+        <link rel="icon" type="image/png" href="{{ asset('build/images/Logo/logo.png') }}">
         @yield('css')
 
         @include('layouts.head-css')
