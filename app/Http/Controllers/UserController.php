@@ -141,6 +141,7 @@ class UserController extends Controller
 
             $input['image'] = $this->save_image($request->file('image'), 'user_image', null);
             $input['password'] = Hash::make($request->password);
+            $input['default_company'] = 1;
             $input['created_by'] = auth()->user()->id;
             $user = User::create($input);
 
