@@ -45,7 +45,7 @@ class UserRequest extends FormRequest
                 Rule::unique('users', 'nic')->whereNull('deleted_at'),
                 new NicValidation()
             ],
-//            'default_company' => ['required'],
+            'default_company' => ['nullable'],
 //            'companies' => ['required','exists:companies,id']
         ];
         if ($this->isMethod('patch') || $this->isMethod('put')) {
